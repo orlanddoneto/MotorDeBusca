@@ -15,37 +15,30 @@ def count_occurrences (name, page):
 
 
 def printResults(listResult):
-    for item in listResult:
-        print(item)
+    for item in listResult[0:20]:
+        print(f"{item[0]} ::: {item[1]}")
 
 def delete_little_words(text):
-    newList = []
-    for word in text.split(" "):
-        if (len(word) > 4):
-            newList.append(word)
     stringTemp = ""
-    for i in newList:
-        stringTemp += i+" "
+    for word in text.split(" "):
+        if (len(word) > 3):
+            stringTemp += word + " "
 
     return stringTemp;
 
 
 cache = {}
 while True:
-    findWord = input("Faça uma busca: ").upper()
+    search = input("Faça uma busca: ").upper()
 
-    if findWord in cache:
-       printResults(cache[findWord])
+    if search in cache:
+       printResults(cache[search])
 
     else:
         listResult = []
-        countPageResults = 0
         for page in root:
-            if (countPageResults == 20):
-                break
-            result = count_occurrences(findWord, page)
+            result = count_occurrences(search, page)
             if (result != 0):
-                countPageResults+=1
                 title = delete_little_words(page[1].text)
                 listTemp = [result, title]
                 listResult.append(listTemp)
@@ -55,11 +48,11 @@ while True:
         if (len(listResult) == 0):
             listResult.append("Sem resultados para a palavra inserida!")
 
-        cache[findWord] = listResult
+        cache[search] = listResult
 
-        printResults(cache[findWord])
+        printResults(cache[search])
 
-    question = input("Deseja fazer mais uma busca? [1] -> SIM")
+    question = input("Deseja fazer mais uma busca? [1] -> SIM ")
 
     if question != "1":
         break;
