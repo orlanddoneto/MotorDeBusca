@@ -13,6 +13,10 @@ cache = {}
 arrayTablesPages = []
 
 def count_consecutive_positions(list1, list2):
+    """Quando se faz uma busca com mais de uma palavra, essa função faz uma verificação de todas
+    as vezes que as duas palavras aparecem juntas. Para tanto, os vetores de posições de cada palavra
+    são consultados nessa função, e é verificado as posições das ocorrências.
+    """
     count = 0
     set2 = set(list2)
     for num1 in list1:
@@ -22,6 +26,7 @@ def count_consecutive_positions(list1, list2):
     return count * 10
 
 def search_one_word(search):
+    """Aqui está implementado a busca por uma só palavra"""
     listResult = [] #[id, title, search_occurrences]
     indexPage = 0
 
@@ -37,6 +42,7 @@ def search_one_word(search):
 
 
 def search_two_words(search):
+    """Implementação da função com duas palavras"""
     listResult = [] #[id, title, search_occurrences]
     indexPage = 0
     array_words = search.split(" ")
@@ -77,7 +83,8 @@ def search_two_words(search):
 
 
 def get_table_page (page):
-    #agora, a tabela é dada com o seguinte valor: [ocorrencias, posição das ocorrencias, id]
+    """Retorna uma tabela hash de uma determinada página"""
+    #a tabela é dada com o seguinte valor: [ocorrencias, posição das ocorrencias, id]
     tablePage = defaultdict(lambda: [0, [],0])
     for indexWord, wordInText in enumerate(page[2].text.split(" ")):
         if(len(wordInText) > 3):
@@ -92,6 +99,7 @@ def get_table_page (page):
 
 
 def print_results(listResult):
+    """Função que imprime na tela os resultados da busca"""
     if (len(listResult) == 0):
         print("Sem resultados para a palavra inserida!\n")
 
@@ -100,6 +108,7 @@ def print_results(listResult):
 
 
 def add_tables_to_array(root):
+    """Função que adiciona no array todas as tabelas de todas as páginas do arquivo"""
     for page in root:
         table = get_table_page(page)
         arrayTablesPages.append(table)
