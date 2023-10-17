@@ -11,7 +11,11 @@ tree = ET.parse("D:\\Usuario\\Cliente\\Downloads\\verbetesWikipedia.xml")
 root = tree.getroot()
 cache = {}
 arrayTablesPages = []
+numPages = 0
 
+def print_all_pages(root):
+    for page in root:
+       print(f"{page[0].text}, {page[1].text}")
 def count_consecutive_positions(list1, list2):
     """Quando se faz uma busca com mais de uma palavra, essa função faz uma verificação de todas
     as vezes que as duas palavras aparecem juntas. Para tanto, os vetores de posições de cada palavra
@@ -65,6 +69,7 @@ def search_two_words(search):
 
             id = table[array_words[0]][2]
             listTemp = [id, title, search_occurrences]
+
             listResult.append(listTemp)
         elif((array_words[0] in table) and (array_words[1] not in table)):
             title = root[indexPage][1].text
@@ -109,16 +114,23 @@ def print_results(listResult):
 
 def add_tables_to_array(root):
     """Função que adiciona no array todas as tabelas de todas as páginas do arquivo"""
+    global numPages
     for page in root:
         table = get_table_page(page)
         arrayTablesPages.append(table)
+        numPages +=1
 
 time_ini = time.time()
 
 add_tables_to_array(root)
-
 time_final = time.time()
 print(f"{(time_final-time_ini):.2f} segundos de processamento!")
+print(f"O número total de <pages> no arquivo é {numPages}")
+
+printPages = input("Você quer imprimir o título de todas as páginas? [1] -> SIM || Aperte qualquer botão para ir direto para busca" )
+if printPages == "1":
+   print_all_pages(root)
+
 while True:
     search = input("Faça uma busca: ").upper()
 
@@ -136,7 +148,7 @@ while True:
         cache[search] = listResult
         print_results(cache[search])
 
-    question = input("Deseja fazer mais uma busca? [1] -> SIM ")
+    question = input("Deseja fazer mais uma busca? [1] -> SIM || Aperte qualquer botão para finalizar")
 
     if question != "1":
         break
